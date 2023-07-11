@@ -1,8 +1,5 @@
 package atomicstryker.ruins.common;
 
-import java.io.File;
-import java.io.PrintWriter;
-
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -10,8 +7,11 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+
+import java.io.File;
+import java.io.PrintWriter;
 
 class CommandTestTemplate extends CommandBase
 {
@@ -56,7 +56,7 @@ class CommandTestTemplate extends CommandBase
                 }
                 else
                 {
-                    player.sendMessage(new TextComponentTranslation("You need to use the command with the target template name, eg. /parseruin beach/LightHouse"));
+                    player.sendMessage(new TextComponentString("You need to use the command with the target template name, eg. /parseruin beach/LightHouse"));
                 }
             }
             else
@@ -80,12 +80,12 @@ class CommandTestTemplate extends CommandBase
             }
             catch (NumberInvalidException e)
             {
-                sender.sendMessage(new TextComponentTranslation("Invalid coordinates specified"));
+                sender.sendMessage(new TextComponentString("Invalid coordinates specified"));
             }
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("Command is only available for ingame player entities, or with coordinates specified"));
+            sender.sendMessage(new TextComponentString("Command is only available for ingame player entities, or with coordinates specified"));
         }
     }
 
@@ -125,7 +125,7 @@ class CommandTestTemplate extends CommandBase
                             {
                                 break;
                             }
-                            sender.sendMessage(new TextComponentTranslation("Could not find acceptable Y coordinate"));
+                            sender.sendMessage(new TextComponentString("Could not find acceptable Y coordinate"));
                             return;
                         }
                         ++y;
@@ -137,17 +137,17 @@ class CommandTestTemplate extends CommandBase
                     }
                     else
                     {
-                        sender.sendMessage(new TextComponentTranslation("EventRuinTemplateSpawn returned as cancelled, not building that."));
+                        sender.sendMessage(new TextComponentString("EventRuinTemplateSpawn returned as cancelled, not building that."));
                     }
                 }
                 else
                 {
-                    sender.sendMessage(new TextComponentTranslation("Could not parse Ruin of file " + file));
+                    sender.sendMessage(new TextComponentString("Could not parse Ruin of file " + file));
                 }
             }
             catch (RuinTemplate.IncompatibleModException e)
             {
-                sender.sendMessage(new TextComponentTranslation(e.getMessage()));
+                sender.sendMessage(new TextComponentString(e.getMessage()));
             }
             catch (Exception e)
             {
@@ -156,7 +156,7 @@ class CommandTestTemplate extends CommandBase
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("Could not open/write file " + file));
+            sender.sendMessage(new TextComponentString("Could not open/write file " + file));
         }
     }
 

@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -57,18 +57,18 @@ public class CommandParseTemplate extends CommandBase
         {
             if (args.length != 1)
             {
-                player.sendMessage(new TextComponentTranslation("You need to use the command with the target template name, eg. /parseruin funhouse"));
+                player.sendMessage(new TextComponentString("You need to use the command with the target template name, eg. /parseruin funhouse"));
                 player = null;
             }
             else
             {
                 templateName = args[0];
-                player.sendMessage(new TextComponentTranslation("Template parser ready to create " + templateName + ". Break any block of the baseplate now."));
+                player.sendMessage(new TextComponentString("Template parser ready to create " + templateName + ". Break any block of the baseplate now."));
             }
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("Command only available for ingame player entities."));
+            sender.sendMessage(new TextComponentString("Command only available for ingame player entities."));
         }
     }
 

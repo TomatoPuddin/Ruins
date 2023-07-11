@@ -1,16 +1,6 @@
 package atomicstryker.ruins.common;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.lang.reflect.Field;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,15 +10,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityCommandBlock;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.tileentity.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.lang.reflect.Field;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 
 class World2TemplateParser extends Thread
 {
@@ -163,19 +158,19 @@ class World2TemplateParser extends Thread
             zLength = 1 + zmax - lowestZ;
 
             readBlocks(world);
-            player.sendMessage(new TextComponentTranslation("Block reading finished. Rules: " + usedBlocks.size() + ", layers: " + layerData.size() + ", xlen: " + xLength + ", zlen: " + zLength));
+            player.sendMessage(new TextComponentString("Block reading finished. Rules: " + usedBlocks.size() + ", layers: " + layerData.size() + ", xlen: " + xLength + ", zlen: " + zLength));
 
             File templateFile = new File(RuinsMod.getMinecraftBaseDir(), RuinsMod.TEMPLATE_PATH_MC_EXTRACTED + "templateparser/" + fileName + ".tml");
             toFile(templateFile);
 
             if (!failed)
             {
-                player.sendMessage(new TextComponentTranslation("Success writing templatefile " + templateFile));
+                player.sendMessage(new TextComponentString("Success writing templatefile " + templateFile));
             }
         }
         else
         {
-            player.sendMessage(new TextComponentTranslation("Template Parse fail, chosen Block was air WTF?!"));
+            player.sendMessage(new TextComponentString("Template Parse fail, chosen Block was air WTF?!"));
         }
     }
 
@@ -457,7 +452,7 @@ class World2TemplateParser extends Thread
             PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
 
             pw.println();
-            pw.println("# Created by Ruins mod version " + RuinsMod.modversion + " Ingame Parser");
+            pw.println("# Created by Ruins mod version " + RuinsMod.ModVersion + " Ingame Parser");
             pw.println("# authoring Player: " + player.getName());
             pw.println();
 
@@ -587,8 +582,8 @@ class World2TemplateParser extends Thread
         {
             e.printStackTrace();
             failed = true;
-            player.sendMessage(new TextComponentTranslation("Something broke! See server logfile for exception message and get it to AtomicStryker."));
-            player.sendMessage(new TextComponentTranslation("First line of stacktrace: " + e.getMessage()));
+            player.sendMessage(new TextComponentString("Something broke! See server logfile for exception message and get it to AtomicStryker."));
+            player.sendMessage(new TextComponentString("First line of stacktrace: " + e.getMessage()));
         }
     }
 

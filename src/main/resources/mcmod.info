@@ -1,10 +1,11 @@
 [
   {
-    "modid": "AS_Ruins",
+    "modid": "${mod_id}",
     "name": "Ruins Spawning System",
     "description": "Allows highly customizable Structure Templates to randomly generate in your Worlds",
-    "mcversion": "${mcversion}",
-    "url": "http://www.minecraftforum.net/topic/1113099-",
+    "version": "${version}",
+    "mcversion": "${mc_version}",
+    "url": "${url}",
     "authors": [
       "AtomicStryker",
       "QuarterAnimal",

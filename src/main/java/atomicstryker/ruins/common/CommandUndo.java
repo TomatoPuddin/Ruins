@@ -1,7 +1,5 @@
 package atomicstryker.ruins.common;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.command.CommandBase;
@@ -11,10 +9,12 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import java.util.ArrayList;
 
 public class CommandUndo extends CommandBase
 {
@@ -121,7 +121,7 @@ public class CommandUndo extends CommandBase
         {
             if (savedLocations.isEmpty())
             {
-                sender.sendMessage(new TextComponentTranslation("There is nothing cached to be undone..."));
+                sender.sendMessage(new TextComponentString("There is nothing cached to be undone..."));
             }
             else
             {
@@ -142,13 +142,13 @@ public class CommandUndo extends CommandBase
                     w.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(new BlockPos(ta.xBase - 1, ta.yBase - 1, ta.zBase - 1),
                             new BlockPos(ta.xBase + ta.blockArray.length + 1, ta.yBase + ta.blockArray[0].length + 1, ta.zBase + ta.blockArray[0][0].length + 1))).forEach(Entity::setDead);
                 }
-                sender.sendMessage(new TextComponentTranslation("Cleared away " + savedLocations.size() + " template sites."));
+                sender.sendMessage(new TextComponentString("Cleared away " + savedLocations.size() + " template sites."));
                 savedLocations.clear();
             }
         }
         else
         {
-            sender.sendMessage(new TextComponentTranslation("Command can only be run ingame..."));
+            sender.sendMessage(new TextComponentString("Command can only be run ingame..."));
         }
     }
 

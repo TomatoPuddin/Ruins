@@ -40,10 +40,12 @@ import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod(modid = "ruins", name = "Ruins Mod", version = RuinsMod.modversion, dependencies = "after:extrabiomes")
+@Mod(modid = RuinsMod.ModId, name = RuinsMod.ModName, version = RuinsMod.ModVersion, dependencies = "after:extrabiomes")
 public class RuinsMod
 {
-    static final String modversion = "17.2";
+    public static final String ModVersion = "${MOD_VERSION}";
+    public static final String ModName = "${MOD_NAME}";
+    public static final String ModId = "${MOD_ID}";
 
     public static final String TEMPLATE_PATH_MC_EXTRACTED = "config/ruins_config/";
     public static final String TEMPLATE_PATH_JAR = "ruins_config";

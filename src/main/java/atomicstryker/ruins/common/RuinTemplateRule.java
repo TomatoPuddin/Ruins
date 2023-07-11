@@ -1,17 +1,7 @@
 package atomicstryker.ruins.common;
 
-import java.io.PrintWriter;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
@@ -27,22 +17,22 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityCommandBlock;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.tileentity.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTable;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+
+import java.io.PrintWriter;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RuinTemplateRule
 {
@@ -661,7 +651,7 @@ public class RuinTemplateRule
                 String[] splits = dataString.split(":");
                 for (int i = 0; i < tes.signText.length && i + 1 < splits.length; i++)
                 {
-                    tes.signText[i] = (splits[i + 1].split("-")[0].equals("null")) ? new TextComponentTranslation("") : new TextComponentTranslation(splits[i + 1].split("-")[0]);
+                    tes.signText[i] = (splits[i + 1].split("-")[0].equals("null")) ? new TextComponentString("") : new TextComponentString(splits[i + 1].split("-")[0]);
                 }
             }
         }
@@ -673,7 +663,7 @@ public class RuinTemplateRule
                 String[] splits = dataString.split(":");
                 for (int i = 0; i < tes.signText.length && i + 1 < splits.length; i++)
                 {
-                    tes.signText[i] = (splits[i + 1].split("-")[0].equals("null")) ? new TextComponentTranslation("") : new TextComponentTranslation(splits[i + 1].split("-")[0]);
+                    tes.signText[i] = (splits[i + 1].split("-")[0].equals("null")) ? new TextComponentString("") : new TextComponentString(splits[i + 1].split("-")[0]);
                 }
             }
         }
