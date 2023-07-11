@@ -1,0 +1,130 @@
+buildscript {
+    repositories {
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id "net.kyori.blossom" version "1.2.0"
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+group = 'atomicstryker.ruins.common'
+version = project.version
+
+java {
+    archivesBaseName = 'ruins-1.12.2'
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
+}
+
+minecraft {
+    mappings channel: 'snapshot', version: '20180105-1.12'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                ruins {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                ruins {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "ruins.refmap.json"
+
+    config "ruins.mixins.json"
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+configurations {
+    embed
+    implementation.extendsFrom(embed)
+}
+
+repositories {
+    maven { url = 'https://maven.cleanroommc.com' }
+    mavenCentral()
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2860'
+
+    compileOnly 'zone.rong:mixinbooter:8.3'
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+blossom {
+    ext.replaceConstants = { token, target ->
+        replaceToken("\${${token}}", target, "src/main/java/atomicstryker/ruins/common/RuinsMod.java")
+    }
+
+    replaceConstants 'MOD_NAME', project.name
+    replaceConstants 'MOD_VERSION', project.version
+    replaceConstants 'MOD_WEBSITE', project.url
+    replaceConstants 'MOD_ID', project.mod_id
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : project.name,
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'FMLCorePluginContainsFMLMod': true,
+                'FMLCorePlugin'           : 'atomicstryker.ruins.common.CoreMod',
+                "ForceLoadAsMod"          : "true",
+                "TweakClass"              : "org.spongepowered.asm.launch.MixinTweaker",
+        ])
+    }
+}
+
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    duplicatesStrategy = 'include'
+    outputs.upToDateWhen { false }
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        expand project.properties
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
