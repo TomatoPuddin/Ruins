@@ -1,20 +1,8 @@
 package atomicstryker.ruins.common;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Random;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityCommandBlock;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldProviderHell;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -23,7 +11,6 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -39,6 +26,13 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkCheckHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Mod(modid = RuinsMod.ModId, name = RuinsMod.ModName, version = RuinsMod.ModVersion, dependencies = "after:extrabiomes")
 public class RuinsMod
@@ -96,7 +90,7 @@ public class RuinsMod
             if (is != null && is.getItem() == Items.STICK && System.currentTimeMillis() > nextInfoTime)
             {
                 nextInfoTime = System.currentTimeMillis() + 1000L;
-                event.getEntityPlayer().sendMessage(new TextComponentTranslation(String.format("BlockName [%s], blockID [%s], metadata [%d]", event.getState().getBlock().getUnlocalizedName(),
+                event.getEntityPlayer().sendMessage(new TextComponentString(String.format("BlockName [%s], blockID [%s], metadata [%d]", event.getState().getBlock().getUnlocalizedName(),
                         event.getState().getBlock().getRegistryName().getResourcePath(), event.getState().getBlock().getMetaFromState(event.getState()))));
             }
         }
@@ -114,7 +108,7 @@ public class RuinsMod
                 if (is != null && is.getItem() == Items.STICK && System.currentTimeMillis() > nextInfoTime)
                 {
                     nextInfoTime = System.currentTimeMillis() + 1000L;
-                    event.getPlayer().sendMessage(new TextComponentTranslation(String.format("BlockName [%s], blockID [%s], metadata [%d]", event.getState().getBlock().getUnlocalizedName(),
+                    event.getPlayer().sendMessage(new TextComponentString(String.format("BlockName [%s], blockID [%s], metadata [%d]", event.getState().getBlock().getUnlocalizedName(),
                             event.getState().getBlock().getRegistryName().getResourcePath(), event.getState().getBlock().getMetaFromState(event.getState()))));
                     event.setCanceled(true);
                 }
@@ -132,45 +126,6 @@ public class RuinsMod
         }
     }
 
-    @SubscribeEvent
-    public void onEntityEnteringChunk(EntityEvent.EnteringChunk event)
-    {
-        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().world.isRemote)
-        {
-            TileEntityCommandBlock tecb;
-            ArrayList<TileEntityCommandBlock> tecblist = new ArrayList<>();
-
-            for (int xoffset = -4; xoffset <= 4; xoffset++)
-            {
-                for (int zoffset = -4; zoffset <= 4; zoffset++)
-                {
-                    for (TileEntity teo : event.getEntity().world.getChunkFromChunkCoords(event.getNewChunkX() + xoffset, event.getNewChunkZ() + zoffset).getTileEntityMap().values())
-                    {
-                        if (teo instanceof TileEntityCommandBlock)
-                        {
-                            tecb = (TileEntityCommandBlock) teo;
-                            if (tecb.getCommandBlockLogic().getCommand().startsWith("RUINSTRIGGER "))
-                            {
-                                // strip prefix from command
-                                tecb.getCommandBlockLogic().setCommand((tecb.getCommandBlockLogic().getCommand()).substring(13));
-                                tecblist.add(tecb);
-                            }
-                        }
-                    }
-                }
-            }
-
-            for (TileEntityCommandBlock tecb2 : tecblist)
-            {
-                // call command block execution
-                tecb2.getCommandBlockLogic().trigger(event.getEntity().world);
-                // kill block
-                BlockPos pos = tecb2.getPos();
-                System.out.printf("Ruins executed and killed Command Block at [%s]\n", pos);
-                event.getEntity().world.setBlockToAir(pos);
-            }
-        }
-    }
 
     private class RuinsWorldGenerator implements IWorldGenerator
     {

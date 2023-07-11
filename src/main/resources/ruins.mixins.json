@@ -1,0 +1,13 @@
+{
+  "minVersion": "0.7",
+  "package": "atomicstryker.ruins.common.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "refmap": "mixins.ruins.refmap.json",
+  "mixins": [
+    "TileEntityCommandBlockMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
